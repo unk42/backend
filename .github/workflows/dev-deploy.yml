@@ -1,0 +1,36 @@
+name: Dev Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        run: |
+          echo "[default]" >> $HOME/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $HOME/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $HOME/.aws/credentials
+          echo "[default]" >> $HOME/.aws/config
+          echo "region=${{ us-west-2 }}" >> $HOME/.aws/config
+
+      - name: Deploy to dev environment
+        run: |
+          # Команды для развертывания на dev окружении
+          sudo apt update
+          sudo apt install git curl
+          git clone --depth 1 https://github.com/brocoders/nestjs-boilerplate.git my-app
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
+          sudo usermod -aG docker $USER
+          cd my-app/
+          cp env-example .env
+          docker compose up -d
+          docker compose logs
