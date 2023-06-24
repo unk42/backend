@@ -8,29 +8,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentials
-        run: |
-          echo "[default]" >> $HOME/.aws/credentials
-          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $HOME/.aws/credentials
-          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $HOME/.aws/credentials
-          echo "[default]" >> $HOME/.aws/config
-          echo "region=us-west-2 >> $HOME/.aws/config
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: 34.220.80.221 # Замените на IP-адрес или хост-имя вашей EC2-инстанции
+          username: ubuntu # Замените на имя пользователя для доступа к EC2-инстанции
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Замените на значение приватного ключа SSH, сохраненного в secrets вашего репозитория
+          source: ./
+          target: /home/ubuntu/ # Замените на путь к месту назначения на EC2-инстанции
 
-      - name: Deploy to dev environment
+      - name: Connect to EC2 and deploy
         run: |
-          # Команды для развертывания на dev окружении
-          sudo apt update
-          sudo apt install git curl
-          git clone --depth 1 https://github.com/brocoders/nestjs-boilerplate.git my-app
-          curl -fsSL https://get.docker.com -o get-docker.sh
-          sudo sh get-docker.sh
-          sudo usermod -aG docker $USER
-          cd my-app/
-          cp env-example .env
-          docker compose up -d
-          docker compose logs
+          ssh -i <SSH_PRIVATE_KEY> <EC2_USERNAME>@<EC2_HOST> "cd /home/ubuntu/ && echo "Hello""
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Замените на путь к приватному ключу SSH на вашей локальной машине
+          EC2_USERNAME: ubuntu # Замените на имя пользователя для доступа к EC2-инстанции
+          EC2_HOST: 34.220.80.221 # Замените на IP-адрес или хост-имя вашей EC2-инстанции
