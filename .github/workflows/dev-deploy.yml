@@ -24,10 +24,10 @@ jobs:
 
       - name: Connect to EC2 and deploy
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key && chmod 600 private_key
+          echo "$secrets.SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -i private_key ubuntu@35.91.158.236 '
             sudo apt update
-            sudo apt install curl git
+            sudo apt install git curl
             curl -fsSL https://get.docker.com -o get-docker.sh
             sudo sh get-docker.sh
             sudo usermod -aG docker $USER
