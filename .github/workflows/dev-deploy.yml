@@ -21,18 +21,16 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }} # Замените на значение приватного ключа SSH, сохраненного в secrets вашего репозитория
           source: ./
           target: /home/ubuntu/ # Замените на путь к месту назначения на EC2-инстанции
-
-      - name: Connect to EC2 and deploy
-        run: |
-          echo "$secrets.SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -i private_key ubuntu@35.91.158.236 '
-            sudo apt update &&
-            sudo apt install git curl &&
-            curl -fsSL https://get.docker.com -o get-docker.sh &&
-            sudo sh get-docker.sh &&
-            sudo usermod -aG docker $USER &&
-            git clone --depth 1 https://github.com/brocoders/nestjs-boilerplate.git my-app &&
-            cd my-app/ &&
-            cp env-example .env &&
-            sudo docker compose up -d
-          '
+          run: |
+            echo "$key" > private_key && chmod 600 private_key
+            ssh -i private_key ubuntu@35.91.158.236 '
+              sudo apt update &&
+              sudo apt install git curl &&
+              curl -fsSL https://get.docker.com -o get-docker.sh &&
+              sudo sh get-docker.sh &&
+              sudo usermod -aG docker $USER &&
+              git clone --depth 1 https://github.com/brocoders/nestjs-boilerplate.git my-app &&
+              cd my-app/ &&
+              cp env-example .env &&
+              sudo docker compose up -d
+            '
