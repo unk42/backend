@@ -28,7 +28,7 @@ jobs:
               sudo apt install git curl &&
               curl -fsSL https://get.docker.com -o get-docker.sh &&
               sudo sh get-docker.sh &&
-              sudo usermod -aG docker $USER &&
+              sudo usermod -aG docker ubuntu &&
               git clone --depth 1 https://github.com/brocoders/nestjs-boilerplate.git my-app &&
               cd my-app/ &&
               cp env-example .env &&
