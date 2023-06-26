@@ -22,15 +22,18 @@ jobs:
           source: ./
           target: /home/ubuntu/ # Замените на путь к месту назначения на EC2-инстанции
           run: |
-            echo "$key" > private_key && chmod 600 private_key
-            ssh -i private_key ubuntu@54.185.172.27 '
-              sudo apt update &&
-              sudo apt install git curl &&
-              curl -fsSL https://get.docker.com -o get-docker.sh &&
-              sudo sh get-docker.sh &&
-              sudo usermod -aG docker ubuntu &&
-              git clone --depth 1 https://github.com/brocoders/nestjs-boilerplate.git my-app &&
-              cd my-app/ &&
-              cp env-example .env &&
+            mkdir -p ~/.ssh
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H your_ec2_instance_ip >> ~/.ssh/known_hosts
+            ssh -i ~/.ssh/id_rsa ubuntu@54.185.172.27 '
+              sudo apt update
+              sudo apt install git curl
+              curl -fsSL https://get.docker.com -o get-docker.sh
+              sudo sh get-docker.sh
+              sudo usermod -aG docker ubuntu
+              git clone --depth 1 https://github.com/brocoders/nestjs-boilerplate.git my-app
+              cd my-app/
+              cp env-example .env
               sudo docker compose up -d
             '
