@@ -20,5 +20,5 @@ jobs:
           
       - name: Run remote command
         run: |
-          ssh -i ~/.ssh/id_rsa ubuntu@54.185.172.27 "echo 'Hello, World!'"
+          ssh -v -i ~/.ssh/id_rsa ubuntu@54.185.172.27 "echo 'Hello, World!'"
           
