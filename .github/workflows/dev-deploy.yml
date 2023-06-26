@@ -16,14 +16,14 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/scp-action@master
         with:
-          host: 35.91.158.236 # Замените на IP-адрес или хост-имя вашей EC2-инстанции
+          host: 54.185.172.27 # Замените на IP-адрес или хост-имя вашей EC2-инстанции
           username: ubuntu # Замените на имя пользователя для доступа к EC2-инстанции
           key: ${{ secrets.SSH_PRIVATE_KEY }} # Замените на значение приватного ключа SSH, сохраненного в secrets вашего репозитория
           source: ./
           target: /home/ubuntu/ # Замените на путь к месту назначения на EC2-инстанции
           run: |
             echo "$key" > private_key && chmod 600 private_key
-            ssh -i private_key ubuntu@35.91.158.236 '
+            ssh -i private_key ubuntu@54.185.172.27 '
               sudo apt update &&
               sudo apt install git curl &&
               curl -fsSL https://get.docker.com -o get-docker.sh &&
