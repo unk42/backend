@@ -19,8 +19,4 @@ jobs:
           cat ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 34.222.230.78 >> ~/.ssh/known_hosts
-          
-      - name: Run remote command
-        run: |
           ssh -v -i ~/.ssh/id_rsa ubuntu@34.222.230.78 "echo 'Hello, World!'"
-          
