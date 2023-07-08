@@ -10,13 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
-    
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 34.222.230.78 >> ~/.ssh/known_hosts
-          ssh -v -i ~/.ssh/id_rsa ubuntu@34.222.230.78 "echo 'Hello, World!'"
+          echo "$SSH_KEY" > ~/.ssh/vm.key
+          chmod 600 ~/.ssh/vm.key
+          cat >>~/.ssh/config <<END
+          Host vm
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/vm.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.VM_SSH_USER }}
+          SSH_KEY: ${{ secrets.VM_SSH_KEY }}
+          SSH_HOST: ${{ secrets.VM_SSH_HOST }}
+
+      - name: Stop the server
+        run: ssh vm 'echo "Hello World"'
