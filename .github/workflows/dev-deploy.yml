@@ -27,5 +27,7 @@ jobs:
           SSH_KEY: ${{ secrets.MY_SSH_KEY }}
           SSH_HOST: ${{ secrets.MY_SSH_HOST }}
 
-      - name: Stop the server
-        run: ssh vm 'echo "Hello World"'
+      - name: Configuring remote server
+        run: |
+          ssh vm 'echo "Hello World"'
+          ssh vm 'echo "Hi!" >> hello.txt'
