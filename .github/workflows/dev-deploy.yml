@@ -30,11 +30,9 @@ jobs:
       - name: Deploy to EC2 remote server
         run: |
           ssh vm 'sudo apt update && sudo apt install git curl -y'
-          #ssh vm 'curl -fsSL https://get.docker.com -o get-docker.sh'
-          #ssh vm 'sudo sh get-docker.sh'
           ssh vm 'git clone https://github.com/unk42/backend.git'
           ssh vm 'cd backend'
           ssh vm 'cp env-example .env'
           ssh vm 'sudo docker compose up -d'
-          ssh vm 'echo "PASS!"'
+          ssh vm 'echo "PASS!!"'
           
