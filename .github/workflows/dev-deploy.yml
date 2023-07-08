@@ -34,6 +34,6 @@ jobs:
           #ssh vm 'sudo sh get-docker.sh'
           #ssh vm 'sudo usermod -aG docker $SSH_USER'
           ssh vm 'git clone https://github.com/unk42/backend.git'
-          ssh vm 'cd my-app/ && cp env-example .env'
+          ssh vm 'cd backend/ && cp env-example .env'
           ssh vm 'sudo docker compose up -d'
           
