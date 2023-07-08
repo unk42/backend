@@ -10,15 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - uses: actions/checkout@v3
+    
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           cat ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 54.185.190.55 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 34.222.230.78 >> ~/.ssh/known_hosts
           
       - name: Run remote command
         run: |
-          ssh -v -i ~/.ssh/id_rsa ubuntu@54.185.190.55 "echo 'Hello, World!'"
+          ssh -v -i ~/.ssh/id_rsa ubuntu@34.222.230.78 "echo 'Hello, World!'"
           
