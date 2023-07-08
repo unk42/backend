@@ -23,9 +23,9 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.VM_SSH_USER }}
-          SSH_KEY: ${{ secrets.VM_SSH_KEY }}
-          SSH_HOST: ${{ secrets.VM_SSH_HOST }}
+          SSH_USER: ${{ secrets.MY_SSH_USER }}
+          SSH_KEY: ${{ secrets.MY_SSH_KEY }}
+          SSH_HOST: ${{ secrets.MY_SSH_HOST }}
 
       - name: Stop the server
         run: ssh vm 'echo "Hello World"'
