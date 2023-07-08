@@ -36,4 +36,5 @@ jobs:
           ssh vm 'cd /home/ubuntu/backend/'
           ssh vm 'cp env-example .env'
           ssh vm 'sudo docker compose up -d'
+          ssh vm 'echo "PASS!"'
           
