@@ -30,7 +30,9 @@ jobs:
       - name: Deploy to EC2 remote server
         run: |
           ssh vm 'sudo apt update && sudo apt install git curl -y'
-          ssh vm 'git clone https://github.com/unk42/backend.git'
+          echo "$REPO_UPDATE_SCRIPT" > ~/script.sh
+          scp script.sh $SSH_USER@$SSH_HOST:/home/ubuntu/
+          ssh vm 'sh /home/ubuntu/script.sh'
           ssh vm 'cd /home/ubuntu/backend'
           ssh vm 'cp /home/ubuntu/backend/env-example /home/ubuntu/backend/.env'
           ssh vm 'sudo docker compose --project-directory=//home/ubuntu/backend up -d'
