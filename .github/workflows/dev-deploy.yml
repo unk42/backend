@@ -38,6 +38,6 @@ jobs:
           ssh vm 'sudo docker compose --project-directory=//home/ubuntu/backend up -d'
           ssh vm 'echo "PASS!!!"'
         env:
-          UPDATE_SCRIPT: ${{ secrets.MY_UPDATE_SCRIPT }}
+          UPDATE_SCRIPT: ${{ secrets.REPO_UPDATE_SCRIPT }}
           
           
