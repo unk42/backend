@@ -30,11 +30,14 @@ jobs:
       - name: Deploy to EC2 remote server
         run: |
           ssh vm 'sudo apt update && sudo apt install git curl -y'
-          echo "$REPO_UPDATE_SCRIPT" > ~/script.sh
+          echo "$UPDATE_SCRIPT" > ~/script.sh
           scp -i ~/.ssh/vm.key ~/script.sh ubuntu@35.88.104.48:/home/ubuntu/
           ssh vm 'sh /home/ubuntu/script.sh'
           ssh vm 'cd /home/ubuntu/backend'
           ssh vm 'cp /home/ubuntu/backend/env-example /home/ubuntu/backend/.env'
           ssh vm 'sudo docker compose --project-directory=//home/ubuntu/backend up -d'
           ssh vm 'echo "PASS!!!"'
+        env:
+          UPDATE_SCRIPT: ${{ secrets.MY_UPDATE_SCRIPT }}
+          
           
