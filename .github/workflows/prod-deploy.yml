@@ -34,7 +34,7 @@ jobs:
           ssh vm 'sudo apt update && sudo apt install git curl -y'
           echo "$UPDATE_SCRIPT" > ~/script.sh
           scp -i ~/.ssh/vm.key ~/script.sh $SSH_USER@$SSH_HOST:/home/$SSH_USER
-          ssh vm 'sh /home/$SSH_USER/script.sh'
+          ssh vm 'sh /home/ubuntu/script.sh'
           ssh vm 'cd /home/$SSH_USER/backend'
           ssh vm 'cp /home/$SSH_USER/backend/env-example /home/$SSH_USER/backend/.env'
           ssh vm 'sudo docker compose --project-directory=//home/$SSH_USER/backend up -d'
