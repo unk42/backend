@@ -23,21 +23,21 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.MY_SSH_USER }}
-          SSH_KEY: ${{ secrets.MY_SSH_KEY }}
-          SSH_HOST: ${{ secrets.MY_SSH_HOST }}
+          SSH_USER: ${{ secrets.DEV_SSH_USER }}
+          SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+          SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
 
       - name: Deploy to EC2 remote server
         run: |
           ssh vm 'sudo apt update && sudo apt install git curl -y'
           echo "$UPDATE_SCRIPT" > ~/script.sh
-          scp -i ~/.ssh/vm.key ~/script.sh ubuntu@35.88.104.48:/home/ubuntu
-          ssh vm 'sh /home/ubuntu/script.sh'
-          ssh vm 'cd /home/ubuntu/backend'
-          ssh vm 'cp /home/ubuntu/backend/env-example /home/ubuntu/backend/.env'
-          ssh vm 'sudo docker compose --project-directory=//home/ubuntu/backend up -d'
+          scp -i ~/.ssh/vm.key ~/script.sh $SSH_USER@$SSH_HOST:/home/ubuntu
+          ssh vm 'sh /home/$SSH_USER/script.sh'
+          ssh vm 'cd /home/$SSH_USER/backend'
+          ssh vm 'cp /home/$SSH_USER/backend/env-example /home/$SSH_USER/backend/.env'
+          ssh vm 'sudo docker compose --project-directory=//home/$SSH_USER/backend up -d'
           ssh vm 'echo "PASS!!!"'
         env:
-          UPDATE_SCRIPT: ${{ secrets.REPO_UPDATE_SCRIPT }}
+          UPDATE_SCRIPT: ${{ secrets.BACKEND_DEV_DEPLOY_SCRIPT }}
           
           
