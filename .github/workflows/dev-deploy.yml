@@ -3,7 +3,13 @@ name: Dev Deployment
 on:
   push:
     branches:
-      - master
+      - dev
+
+env:
+  SSH_USER: ${{ secrets.DEV_SSH_USER }}
+  SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+  SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+  UPDATE_SCRIPT: ${{ secrets.BACKEND_DEV_DEPLOY_SCRIPT }}
 
 jobs:
   deploy:
@@ -22,22 +28,14 @@ jobs:
             IdentityFile ~/.ssh/vm.key
             StrictHostKeyChecking no
           END
-        env:
-          SSH_USER: ${{ secrets.DEV_SSH_USER }}
-          SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
-          SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
-
+        
       - name: Deploy to EC2 remote server
         run: |
           ssh vm 'sudo apt update && sudo apt install git curl -y'
           echo "$UPDATE_SCRIPT" > ~/script.sh
           scp -i ~/.ssh/vm.key ~/script.sh $SSH_USER@$SSH_HOST:/home/$SSH_USER
-          ssh vm 'sh /home/$SSH_USER/script.sh'
-          ssh vm 'cd /home/$SSH_USER/backend'
-          ssh vm 'cp /home/$SSH_USER/backend/env-example /home/$SSH_USER/backend/.env'
-          ssh vm 'sudo docker compose --project-directory=//home/$SSH_USER/backend up -d'
+          ssh vm 'sh /home/${{ env.SSH_USER }}/script.sh'
+          ssh vm 'cd /home/${{ env.SSH_USER }}/backend'
+          ssh vm 'cp /home/${{ env.SSH_USER }}/backend/env-example /home/${{ env.SSH_USER }}/backend/.env'
+          ssh vm 'sudo docker compose --project-directory=//home/${{ env.SSH_USER }}/backend up -d'
           ssh vm 'echo "PASS!!!"'
-        env:
-          UPDATE_SCRIPT: ${{ secrets.BACKEND_DEV_DEPLOY_SCRIPT }}
-          
-          
