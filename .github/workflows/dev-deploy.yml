@@ -31,7 +31,7 @@ jobs:
         run: |
           ssh vm 'sudo apt update && sudo apt install git curl -y'
           echo "$UPDATE_SCRIPT" > ~/script.sh
-          scp -i ~/.ssh/vm.key ~/script.sh ubuntu@35.88.104.48:/home/ubuntu/
+          scp -i ~/.ssh/vm.key ~/script.sh ubuntu@35.88.104.48:/home/ubuntu
           ssh vm 'sh /home/ubuntu/script.sh'
           ssh vm 'cd /home/ubuntu/backend'
           ssh vm 'cp /home/ubuntu/backend/env-example /home/ubuntu/backend/.env'
