@@ -23,9 +23,9 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.PROD1_SSH_USER }}
-          SSH_KEY: ${{ secrets.PROD1_SSH_KEY }}
-          SSH_HOST: ${{ secrets.PROD1_SSH_HOST }}
+          SSH_USER: ${{ secrets.PROD_SSH_USER }}
+          SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
+          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
 
       - name: Deploy to EC2 remote server
         run: |
@@ -38,4 +38,4 @@ jobs:
           ssh vm 'sudo docker compose --project-directory=//home/$SSH_USER/backend up -d'
           ssh vm 'echo "PASS!!!"'
         env:
-          UPDATE_SCRIPT: ${{ secrets.REPO_UPDATE_SCRIPT }}
+          UPDATE_SCRIPT: ${{ secrets.BACKEND_PROD_DEPLOY_SCRIPT }}
