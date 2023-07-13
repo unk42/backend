@@ -3,7 +3,7 @@ name: Dev Deployment
 on:
   push:
     branches:
-      - dev
+      - master
 
 env:
   SSH_USER: ${{ secrets.DEV_SSH_USER }}
@@ -39,3 +39,4 @@ jobs:
           ssh vm 'cp /home/${{ env.SSH_USER }}/backend/env-example /home/${{ env.SSH_USER }}/backend/.env'
           ssh vm 'sudo docker compose --project-directory=//home/${{ env.SSH_USER }}/backend up -d'
           ssh vm 'echo "PASS!!!"'
+          
