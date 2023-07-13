@@ -38,5 +38,5 @@ jobs:
           ssh vm 'cd /home/${{ env.SSH_USER }}/backend'
           ssh vm 'cp /home/${{ env.SSH_USER }}/backend/env-example /home/${{ env.SSH_USER }}/backend/.env'
           ssh vm 'sudo docker compose --project-directory=//home/${{ env.SSH_USER }}/backend up -d'
-          ssh vm 'echo "PASS!!!"'
+          ssh vm 'echo "PASS!!!!"'
           
